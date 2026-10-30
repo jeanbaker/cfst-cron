@@ -13,10 +13,13 @@ WORKDIR /app
 RUN curl -L -o cfst.tar.gz https://github.com/XIU2/CloudflareSpeedTest/releases/latest/download/cfst_linux_amd64.tar.gz \
     && tar -zxvf cfst.tar.gz \
     && mv cfst_linux_amd64/cfst /app/cfst \
+    && mv cfst_linux_amd64/ip.txt /app/ip.txt \
+    && mv cfst_linux_amd64/ipv6.txt /app/ipv6.txt \
     && rm -rf cfst.tar.gz cfst_linux_amd64 \
     && chmod +x /app/cfst
 
 # 复制启动脚本
+COPY ASN13335.txt /app/ASN13335.txt
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
