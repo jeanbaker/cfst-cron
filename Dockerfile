@@ -1,11 +1,10 @@
 FROM alpine:latest
 
 # 安装必要依赖
-RUN apk add --no-cache ca-certificates curl tzdata dcron
+RUN apk add --no-cache ca-certificates curl tzdata dcron bash
 
 WORKDIR /app
-# 关键：在 Alpine 中安装 bash 和常用网络证书
-RUN apk add --no-cache bash ca-certificates
+
 # 1. 下载压缩包
 # 2. 解压
 # 3. 将解压出来的 cfst 移动到 /app 根目录，保持原名 cfst
