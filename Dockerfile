@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 # 安装必要依赖
-RUN apk add --no-cache ca-certificates curl tzdata dcron bash
+RUN apk add --no-cache ca-certificates curl tzdata dcron bash jq
 
 WORKDIR /app
 
