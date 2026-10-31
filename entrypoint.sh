@@ -12,9 +12,31 @@ chmod +x /app/task.sh
 
 echo "----------------------------------------"
 echo "✅ 容器环境就绪，私有 task.sh 已加载并赋予权限。"
-echo "💡 提示：你可以随时使用 docker exec 手动触发测速："
-echo "   docker exec -it cfst-cron /bin/sh /app/task.sh"
 echo "----------------------------------------"
 
-# 3. 使用 tail -f 挂起容器，让容器作为长驻后台的服务平稳运行，绝对不重启
+# 3. 默认定时规则：每天凌晨 3 点
+CRON_SCHEDULE="${CRON_SCHEDULE:-0 3 * * *}"
+
+echo "----------------------------------------"
+echo "当前配置的定时任务规则: [ $CRON_SCHEDULE ]"
+echo "----------------------------------------"
+
+# 4. 定义任务
+echo "$CRON_SCHEDULE /bin/sh /app/task.sh > /app/output/cron.log 2>&1" > /etc/crontabs/root
+
+# 5. 确保 crontab 文件存在
+touch /etc/crontabs/root
+
+# 6. 检查是否已存在，不存在才追加
+if ! grep -Fqx "$CRON_JOB" /etc/crontabs/root; then
+    echo "$CRON_JOB" >> /etc/crontabs/root
+    echo "已添加定时任务"
+else
+    echo "定时任务已存在，跳过添加"
+fi
+
+# 7. 启动 Cron
+crond -b -l 8
+
+# 8. 保持容器运行
 exec tail -f /dev/null
