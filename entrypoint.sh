@@ -30,13 +30,11 @@ touch /etc/crontabs/root
 # 6. 检查是否已存在，不存在才追加
 if ! grep -Fqx "$CRON_JOB" /etc/crontabs/root; then
     echo "$CRON_JOB" >> /etc/crontabs/root
-    echo "已添加定时任务"
+    echo "定时任务已配置："
+    cat /etc/crontabs/root
 else
     echo "定时任务已存在，跳过添加"
 fi
 
-# 7. 启动 Cron
-crond -b -l 8
-
-# 8. 保持容器运行
-exec tail -f /dev/null
+# 7. Supercronic 前台运行，作为容器 PID 1
+exec /usr/local/bin/supercronic /etc/crontabs/root
