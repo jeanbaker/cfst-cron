@@ -22,7 +22,7 @@ echo "当前配置的定时任务规则: [ $CRON_SCHEDULE ]"
 echo "----------------------------------------"
 
 # 4. 定义任务
-echo "$CRON_SCHEDULE /bin/sh /app/task.sh > /app/output/cron.log 2>&1" > /etc/crontabs/root
+CRON_JOB="$CRON_SCHEDULE /bin/sh /app/task.sh > /app/output/cron.log 2>&1"
 
 # 5. 确保 crontab 文件存在
 touch /etc/crontabs/root
