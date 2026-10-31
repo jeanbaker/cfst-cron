@@ -34,6 +34,7 @@ if ! grep -Fqx "$CRON_JOB" /etc/crontabs/root; then
     cat /etc/crontabs/root
 else
     echo "定时任务已存在，跳过添加"
+    cat /etc/crontabs/root
 fi
 
 # 7. Supercronic 前台运行，作为容器 PID 1
