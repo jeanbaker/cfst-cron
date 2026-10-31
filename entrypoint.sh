@@ -24,18 +24,10 @@ echo "----------------------------------------"
 # 4. 定义任务
 CRON_JOB="$CRON_SCHEDULE /bin/bash /app/task.sh > /app/output/cron.log 2>&1"
 
-# 5. 确保 crontab 文件存在
-touch /etc/crontabs/root
+# 5. 写入定时规则
+echo "$CRON_JOB" > /etc/crontabs/root
+echo "定时任务已配置："
+cat /etc/crontabs/root
 
-# 6. 检查是否已存在，不存在才追加
-if ! grep -Fqx "$CRON_JOB" /etc/crontabs/root; then
-    echo "$CRON_JOB" >> /etc/crontabs/root
-    echo "定时任务已配置："
-    cat /etc/crontabs/root
-else
-    echo "定时任务已存在，跳过添加"
-    cat /etc/crontabs/root
-fi
-
-# 7. Supercronic 前台运行，作为容器 PID 1
-exec /usr/local/bin/supercronic /etc/crontabs/root
+# 6. Supercronic 前台运行，作为容器 PID 1
+exec /usr/local/bin/supercronic -quiet /etc/crontabs/root
