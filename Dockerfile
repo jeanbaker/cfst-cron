@@ -15,7 +15,6 @@ RUN curl -fsSL -o cfst.tar.gz \
     https://github.com/XIU2/CloudflareSpeedTest/releases/latest/download/cfst_linux_amd64.tar.gz \
     && tar -zxf cfst.tar.gz \
     && mv cfst_linux_amd64/cfst /app/cfst \
-    && mv cfst_linux_amd64/ip.txt /app/ip.txt \
     && mv cfst_linux_amd64/ipv6.txt /app/ipv6.txt \
     && rm -rf cfst.tar.gz cfst_linux_amd64 \
     && chmod +x /app/cfst
@@ -28,6 +27,7 @@ RUN curl -fsSL -o /usr/local/bin/supercronic \
 
 # 复制配置文件和启动脚本
 COPY ASN13335.txt /app/ASN13335.txt
+COPY ip.txt /app/ip.txt
 COPY entrypoint.sh /app/entrypoint.sh
 
 RUN chmod +x /app/entrypoint.sh
